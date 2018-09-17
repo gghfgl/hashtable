@@ -4,6 +4,8 @@ import(
 	"fmt"
 	"sync"
 	"strconv"
+	"os"
+	"text/tabwriter"
 )
 
 type HashTable struct {
@@ -56,14 +58,18 @@ func (ht *HashTable) Get(k string) string {
 }
 
 func (ht *HashTable) Dump() {
-	fmt.Println("hash\tbuckets\n")
+	w := new(tabwriter.Writer)
+	w.Init(os.Stdout, 0, 8, 0, '\t', 0)
+	fmt.Fprintln(w, "hash*\tbuckets*\t")
 	for k, v := range ht.items {
-		fmt.Printf("%d\t%s\n", k, v)
+		fmt.Fprintln(w, k, "\t", v, "\t")
 	}
+	fmt.Fprintln(w)
+	w.Flush()
 }
 
 // **********************************
-var r int = 1000
+var r int = 100
 
 // MAIN.
 func main() {
