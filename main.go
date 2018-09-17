@@ -78,7 +78,7 @@ func main() {
 		input["key"+strconv.Itoa(i)] = "value"+strconv.Itoa(i)
 	}
 	
-	hashtable := HashTable{}
+	hashtable := &HashTable{}
 	for k, v := range input {
 		hashtable.Add(k, v)
 	}
