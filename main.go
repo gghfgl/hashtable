@@ -9,7 +9,7 @@ import(
 )
 
 type HashTable struct {
-	items map[int]string
+	items map[int]map[string]string
 	lock sync.RWMutex
 }
 
@@ -28,10 +28,10 @@ func (ht *HashTable) Add(k string, v string) {
 
 	i := hash(k)
 	if ht.items == nil {
-		ht.items = make(map[int]string)
+		ht.items = make(map[int]map[string]string)
 	}
 
-	ht.items[i] = v
+	ht.items[i] = map[string]string{k: v}
 }
 
 func (ht *HashTable) Remove(k string) {
@@ -45,7 +45,7 @@ func (ht *HashTable) Remove(k string) {
 	}
 }
 
-func (ht *HashTable) Get(k string) string {
+func (ht *HashTable) Get(k string) map[string]string {
 	ht.lock.Lock()
 	defer ht.lock.Unlock()
 
@@ -54,7 +54,7 @@ func (ht *HashTable) Get(k string) string {
 	if exists {
 		return v
 	}
-	return ""
+	return nil
 }
 
 func (ht *HashTable) Dump() {
@@ -69,7 +69,7 @@ func (ht *HashTable) Dump() {
 }
 
 // **********************************
-var r int = 100
+var r int = 10
 
 // MAIN.
 func main() {
